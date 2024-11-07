@@ -7,9 +7,9 @@ const routes = [
     component: () => import('../views/HomeView.vue') // Load your Home view component
   },
   {
-    path: '/category/:category',
-    name: 'Category',
-    component: () => import('../views/CategoryView.vue') // Load a Category view
+    path: '/about',
+    name: 'About',
+    component: () => import('../views/AboutView.vue') // Load about view
   },
 ];
 

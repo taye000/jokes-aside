@@ -5,7 +5,7 @@ export default createStore({
   state: {
     categories: [],
     jokes: [],
-    selectedCategory: "food", // Default category
+    selectedCategory: "food",
     currentPage: 1,
     jokesPerPage: 5,
   },
@@ -46,8 +46,11 @@ export default createStore({
     },
     changeCategory({ commit, dispatch }, category) {
       commit("setSelectedCategory", category);
-      commit("setCurrentPage", 1);
+      commit("setCurrentPage", 1); // Reset to first page
       dispatch("fetchJokes");
+    },
+    changePage({ commit }, page) {
+      commit("setCurrentPage", page);
     },
   },
   getters: {
