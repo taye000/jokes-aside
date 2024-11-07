@@ -1,10 +1,26 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div id="app">
+    <!-- Navbar appears at the top of the page -->
+    <AppNavbar />
+
+    <!-- Main content area with jokes list and pagination -->
+    <main>
+      <!-- The router-view is used to dynamically load views based on the route -->
+      <router-view />
+    </main>
+  </div>
 </template>
+
+<script>
+import AppNavbar from './components/AppNavbar.vue';
+
+export default {
+  name: 'App',
+  components: {
+    AppNavbar,
+  },
+};
+</script>
 
 <style>
 #app {
