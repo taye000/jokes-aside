@@ -3,7 +3,7 @@
       <div v-for="joke in paginatedJokes" :key="joke.id" class="joke-card">
         <img :src="joke.icon_url" alt="icon" class="joke-icon" />
         <div class="joke-content">
-          <h3>{{ joke.categories[0] || 'Uncategorized' }}</h3>
+          <h3>{{ joke.categories[0] || selectedCategory || 'Uncategorized'}}</h3> <!-- Set fallback category -->
           <p>{{ joke.value }}</p>
           <small>Created at: {{ joke.created_at }}</small>
         </div>
@@ -16,6 +16,7 @@
     </div>
   </template>
   
+  
   <script>
   import { mapGetters, mapState, mapMutations } from "vuex";
   import AppPagination from "../components/AppPagination.vue";
@@ -25,7 +26,7 @@
       AppPagination,
     },
     computed: {
-      ...mapState(["currentPage"]),
+      ...mapState(["currentPage", "selectedCategory"]),
       ...mapGetters(["paginatedJokes", "totalPages"]),
     },
     methods: {
@@ -59,6 +60,7 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     transition: box-shadow 0.3s ease;
+    cursor: pointer;
   }
   
   .joke-card:hover {
@@ -73,10 +75,19 @@
     object-fit: cover;
   }
   
+  /* Align content inside joke card */
+  .joke-content {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: flex-start; /* Align content at the top */
+    flex-grow: 1; /* Make sure content fills the available space */
+    height: 100%; /* Ensure it takes the full height */
+  }
+  
   .joke-content h3 {
     font-size: 1.1em;
     color: #2c3e50;
-    margin: 0;
+    margin: 0; /* Remove any extra margin to make content align perfectly */
   }
   
   .joke-content p {
@@ -91,6 +102,8 @@
     font-size: 0.8em;
     color: #888888;
     margin-top: 0.5em;
+    margin-bottom: 0; /* Remove bottom margin for consistency */
   }
   </style>
+  
   
