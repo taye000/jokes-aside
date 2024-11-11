@@ -44,6 +44,16 @@ export default createStore({
         console.error("Error fetching jokes:", error);
       }
     },
+    async fetchJokeById(context, id) {
+      try {
+        const response = await axios.get(
+          `https://api.chucknorris.io/jokes/${id}`
+        );
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching jokes:", error);
+      }
+    },
     changeCategory({ commit, dispatch }, category) {
       commit("setSelectedCategory", category);
       commit("setCurrentPage", 1); // Reset to first page

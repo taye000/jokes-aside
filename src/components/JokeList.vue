@@ -1,6 +1,6 @@
 <template>
     <div class="jokes-container">
-      <div v-for="joke in paginatedJokes" :key="joke.id" class="joke-card">
+      <div v-for="joke in paginatedJokes" :key="joke.id" class="joke-card" @click="goToJokeDetail(joke.id)">
         <img :src="joke.icon_url" alt="icon" class="joke-icon" />
         <div class="joke-content">
           <h3>{{ joke.categories[0] || selectedCategory || 'Uncategorized'}}</h3> <!-- Set fallback category -->
@@ -35,6 +35,9 @@
         this.setCurrentPage(page); // Update the page in Vuex store
         this.$store.dispatch("fetchJokes"); // Fetch jokes based on the new page
       },
+    goToJokeDetail(id) {
+    this.$router.push({ name: 'JokeDetail', params: { id } });
+    },
     },
     mounted() {
       this.$store.dispatch("fetchJokes"); // Initially fetch jokes on mount
