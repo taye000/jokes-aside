@@ -4,7 +4,6 @@
         <p>&copy; {{ new Date().getFullYear() }} JokeApp | Powered by Chuck Norris Jokes API</p>
         <ul class="footer-links">
           <li><a href="/about">About</a></li>
-          <li><a href="#privacy">Privacy Policy</a></li>
         </ul>
       </div>
     </footer>

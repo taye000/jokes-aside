@@ -4,7 +4,7 @@
       <li 
         v-for="category in categories" 
         :key="category"
-        @click="changeCategory(category)"
+        @click="selectCategory(category)"
         :class="{ active: category === selectedCategory }"
       >
         {{ category }}

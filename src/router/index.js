@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
-import JokeDetail from "../components/JokeDetail.vue";
+import JokeDetail from "../components/JokeDetail.vue"; // Direct import of JokeDetail component disables Lazy Loading
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import("../views/HomeView.vue"), // Load your Home view component
+    component: () => import("../views/HomeView.vue"), // Dynamic import of homeview component enables Lazy Loading
   },
   {
     path: "/about",
     name: "About",
-    component: () => import("../views/AboutView.vue"), // Load about view
+    component: () => import("../views/AboutView.vue"), // Dynamic import of homeview component enables Lazy Loading
   },
   {
     path: "/joke/:id", // Define the route with a dynamic `id` parameter
