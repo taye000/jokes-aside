@@ -5,6 +5,7 @@ export default createStore({
   state: {
     categories: [],
     jokes: [],
+    joke: null,
     selectedCategory: "food",
     currentPage: 1,
     jokesPerPage: 5,
@@ -18,6 +19,9 @@ export default createStore({
     },
     setSelectedCategory(state, category) {
       state.selectedCategory = category;
+    },
+    setJokeById(state, joke) {
+      state.joke = joke;
     },
     setCurrentPage(state, page) {
       state.currentPage = page;
@@ -44,12 +48,12 @@ export default createStore({
         console.error("Error fetching jokes:", error);
       }
     },
-    async fetchJokeById(context, id) {
+    async fetchJokeById({ commit }, id) {
       try {
         const response = await axios.get(
           `https://api.chucknorris.io/jokes/${id}`
         );
-        return response.data;
+        commit("setJokeById", response.data);
       } catch (error) {
         console.error("Error fetching jokes:", error);
       }

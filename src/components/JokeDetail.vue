@@ -12,33 +12,21 @@
   </template>
   
   <script>
-  import { mapState } from 'vuex';
+  import { mapState, mapActions } from 'vuex';
   
   export default {
     name: 'JokeDetail',
-    props: ['id'], // Receive the `id` parameter from the route
-    data() {
-      return {
-        joke: null, // Placeholder for joke details
-      };
-    },
     computed: {
-      ...mapState(['selectedCategory']),
+      ...mapState(['joke', 'selectedCategory']),  // Map the joke and selectedCategory from Vuex
     },
     async created() {
-      await this.fetchJoke();
+      const jokeId = this.$route.params.id;  // Fetch the joke ID from the route
+      this.fetchJokeById(jokeId);  // Fetch the joke using the Vuex action
     },
     methods: {
-      async fetchJoke() {
-        try {
-          const response = await this.$store.dispatch('fetchJokeById', this.id);
-          this.joke = response;
-        } catch (error) {
-          console.error('Error fetching joke:', error);
-        }
-      },
+      ...mapActions(['fetchJokeById']),  // Map the fetchJokeById action from Vuex
       goBack() {
-        this.$router.back(); // Navigates back to the previous page
+        this.$router.back();  // Navigate back to the previous page
       },
     },
   };
@@ -66,7 +54,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
     transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
   }
-
+  
   .back-button:hover {
     background-color: #34495e;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* More prominent shadow on hover */
