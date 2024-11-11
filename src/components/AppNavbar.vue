@@ -22,6 +22,13 @@ export default {
   },
   methods: {
     ...mapActions(['changeCategory']),
+    selectCategory(category) {
+      // Dispatch action to change the category
+      this.changeCategory(category);
+
+      // Navigate to the home page
+      this.$router.push('/');
+    },
   },
   mounted() {
     this.$store.dispatch('fetchCategories');
