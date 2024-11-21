@@ -19,24 +19,29 @@
 </template>
 
 <script>
-export default {
-  props: {
-    currentPage: {
-      type: Number,
-      required: true,
-    },
-    totalPages: {
-      type: Number,
-      required: true,
-    },
+import { defineComponent } from 'vue';
+import { useJokeStore } from '../store/index'; // Import the Pinia store
+
+export default defineComponent({
+  name: 'AppPagination',
+  setup() {
+    const jokeStore = useJokeStore(); // Access the joke store
+    
+    // Computed properties from the store
+    const currentPage = jokeStore.currentPage;
+    const totalPages = jokeStore.totalPages;
+
+    const pageChanged = (page) => {
+      jokeStore.changePage(page); // Update the page in the Pinia store
+    };
+
+    return {
+      currentPage,
+      totalPages,
+      pageChanged,
+    };
   },
-  emits: ['page-changed'],
-  methods: {
-    pageChanged(page) {
-      this.$emit('page-changed', page);
-    },
-  },
-};
+});
 </script>
 
 <style scoped>
@@ -62,7 +67,7 @@ button:hover {
 
 button:disabled {
   background-color: #bdc3c7;
-  cursor: not-allowed; /* Prevent the cursor pointer on disabled button */
+  cursor: not-allowed;
 }
 
 .cursor-pointer {

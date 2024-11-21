@@ -27,9 +27,15 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'AboutPage',
-};
+  setup() {
+    // No dynamic data is needed, so setup remains simple.
+    return {};
+  },
+});
 </script>
 
 <style scoped>

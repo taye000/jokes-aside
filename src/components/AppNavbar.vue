@@ -1,8 +1,17 @@
 <template>
   <nav>
     <ul>
-      <li 
-        v-for="category in categories" 
+      <!-- Show loading state -->
+      <li v-if="isLoading">
+        <LoadingSpinner :isVisible="true" />
+      </li>
+
+      <!-- Show error state -->
+      <li v-if="error" class="error">{{ error }}</li>
+
+      <!-- Render categories -->
+      <li
+        v-for="category in categories"
         :key="category"
         @click="selectCategory(category)"
         :class="{ active: category === selectedCategory }"
@@ -14,26 +23,43 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { defineComponent, computed, onMounted } from "vue";
+import { useJokeStore } from "../store/index";
+import LoadingSpinner from "./LoadingSpinner.vue";
 
-export default {
-  computed: {
-    ...mapState(['categories', 'selectedCategory']),
+export default defineComponent({
+  name: "AppNavbar",
+  components: {
+    LoadingSpinner,
   },
-  methods: {
-    ...mapActions(['changeCategory']),
-    selectCategory(category) {
-      // Dispatch action to change the category
-      this.changeCategory(category);
+  setup() {
+    const jokeStore = useJokeStore();
 
-      // Navigate to the home page
-      this.$router.push('/');
-    },
+    // Reactive access to store state
+    const categories = computed(() => jokeStore.categories);
+    const selectedCategory = computed(() => jokeStore.selectedCategory);
+    const isLoading = computed(() => jokeStore.isLoading);
+    const error = computed(() => jokeStore.error);
+
+    // Fetch categories on mount if not already fetched
+    onMounted(() => {
+      jokeStore.fetchCategories();
+    });
+
+    // Handle category selection
+    const selectCategory = (category) => {
+      jokeStore.changeCategory(category);
+    };
+
+    return {
+      categories,
+      selectedCategory,
+      isLoading,
+      error,
+      selectCategory,
+    };
   },
-  mounted() {
-    this.$store.dispatch('fetchCategories');
-  },
-};
+});
 </script>
 
 <style scoped>
@@ -65,6 +91,12 @@ nav ul li.active {
   color: #ffffff;
   font-weight: bold;
   border-radius: 4px;
+}
+
+/* Error Message Styling */
+.error {
+  color: red;
+  font-weight: bold;
 }
 
 /* Hover Effect */

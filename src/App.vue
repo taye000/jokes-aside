@@ -15,16 +15,17 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import AppFooter from './components/AppFooter.vue';
 import AppNavbar from './components/AppNavbar.vue';
 
-export default {
+export default defineComponent({
   name: 'App',
   components: {
     AppNavbar,
     AppFooter,
   },
-};
+});
 </script>
 
 <style>
