@@ -79,18 +79,25 @@ nav ul {
 
 nav ul li {
   cursor: pointer;
-  padding: 0.5em 1em;
-  margin: 0 0.5em;
+  padding: 0.5em 1em; /* Consistent padding */
+  margin: 0 0.5em; /* Consistent margin */
   color: #ffffff;
-  transition: color 0.3s, background-color 0.3s;
+  text-align: center;
+  font-weight: 500; /* Use a consistent font weight */
+  border: 1px solid transparent; /* Placeholder for active state */
+  transition: color 0.3s, background-color 0.3s, border 0.3s, padding 0.3s; /* Add smooth transitions */
+  box-sizing: border-box; /* Ensure consistent box model */
 }
 
 /* Active Category Styling */
 nav ul li.active {
   background-color: #42b983;
   color: #ffffff;
-  font-weight: bold;
+  font-weight: 600; /* Slightly increase weight without drastic enlargement */
   border-radius: 4px;
+  border: 1px solid #42b983; /* Avoid size jump due to added border */
+  padding: 0.5em 1em; /* Same padding as other states */
+  margin: 0 0.5em; /* Same margin as other states */
 }
 
 /* Error Message Styling */
@@ -104,5 +111,14 @@ nav ul li:hover {
   background-color: #34495e;
   color: #ffffff;
   border-radius: 4px;
+  padding: 0.5em 1em; /* Ensure padding stays the same during hover */
+  margin: 0 0.5em; /* Ensure margin stays the same during hover */
+}
+
+/* Loading Spinner Alignment */
+nav ul li > *:only-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
