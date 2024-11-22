@@ -7,16 +7,20 @@
       <p class="joke-text">{{ joke.value }}</p>
       <small class="joke-date">Created at: {{ joke.created_at }}</small>
     </div>
-    <p v-else class="loading-text">Loading joke details...</p>
+    <p v-else class="loading-text"><LoadingSpinner :isVisible="true" /></p>
   </div>
 </template>
 
 <script>
 import { useJokeStore } from "../store/index"; // Import Pinia store
 import { onMounted } from "vue"; // Composition API hook
+import LoadingSpinner from "./LoadingSpinner.vue";
 
 export default {
   name: "JokeDetail",
+  components: {
+    LoadingSpinner,
+  },
   setup() {
     // Access Pinia store
     const jokeStore = useJokeStore();

@@ -10,26 +10,27 @@ export const useJokeStore = defineStore("jokeStore", {
     selectedCategory: "food",
     currentPage: 1,
     jokesPerPage: 5,
+    totalJokes: 0, // Store total jokes count from API
     error: null, // Add error state to handle fetch failures
   }),
 
   getters: {
     paginatedJokes(state) {
+      if (state.isLoading) return []; // Return empty if loading
       const start = (state.currentPage - 1) * state.jokesPerPage;
       return state.jokes.slice(start, start + state.jokesPerPage);
     },
     totalPages(state) {
-      return Math.ceil(state.jokes.length / state.jokesPerPage);
+      return Math.ceil(state.totalJokes / state.jokesPerPage); // Use totalJokes from the API
     },
   },
 
   actions: {
     async fetchCategories() {
-      // Prevent redundant API calls if categories are already loaded
       if (this.categories.length > 0) return;
 
       this.isLoading = true;
-      this.error = null; // Reset error state before fetching
+      this.error = null;
       try {
         const { data } = await axios.get(
           "https://api.chucknorris.io/jokes/categories"
@@ -44,17 +45,17 @@ export const useJokeStore = defineStore("jokeStore", {
     },
 
     async fetchJokes() {
-      // Avoid fetching if the selected category's jokes are already loaded
       if (this.selectedCategory === this.previousCategory) return;
 
       this.isLoading = true;
       this.error = null;
-
       try {
         const { data } = await axios.get(
           `https://api.chucknorris.io/jokes/search?query=${this.selectedCategory}`
         );
-        this.jokes = data.result;
+        console.log("Fetched jokes for category:", data);
+        this.jokes = data.result; // Store jokes in state
+        this.totalJokes = data.total; // Store total count from the response
         this.previousCategory = this.selectedCategory;
       } catch (error) {
         console.error("Error fetching jokes:", error);
@@ -66,7 +67,7 @@ export const useJokeStore = defineStore("jokeStore", {
 
     async fetchJokeById(id) {
       this.isLoading = true;
-      this.error = null; // Reset error state
+      this.error = null;
       try {
         const response = await axios.get(
           `https://api.chucknorris.io/jokes/${id}`

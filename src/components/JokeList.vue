@@ -1,7 +1,9 @@
 <template>
   <div class="jokes-container">
     <!-- Loading state -->
-    <div v-if="isLoading" class="loading"><LoadingSpinner :isVisible="true" /></div>
+    <div v-if="isLoading" class="loading">
+      <LoadingSpinner :isVisible="true" />
+    </div>
 
     <!-- Error state -->
     <div v-if="error" class="error">
@@ -30,7 +32,7 @@
 
     <!-- Pagination -->
     <AppPagination
-      v-if="!isLoading && !error && paginatedJokes.length"
+      v-if="!isLoading && !error && totalPages > 1"
       :current-page="currentPage"
       :total-pages="totalPages"
       @page-changed="handlePageChange"
@@ -41,7 +43,7 @@
 <script>
 import { useJokeStore } from "../store/index"; // Import Pinia store
 import AppPagination from "../components/AppPagination.vue";
-import { defineComponent, onMounted, watch, computed } from "vue";
+import { defineComponent, onMounted, computed } from "vue";
 import LoadingSpinner from "./LoadingSpinner.vue";
 
 export default defineComponent({
@@ -52,24 +54,6 @@ export default defineComponent({
   setup() {
     const jokeStore = useJokeStore();
 
-    // Reactive data and methods
-    const {
-      paginatedJokes,
-      selectedCategory,
-      currentPage,
-      totalPages,
-      isLoading,
-      error,
-    } = jokeStore;
-
-    // Watch for category changes and refetch jokes
-    watch(
-      () => jokeStore.selectedCategory,
-      () => {
-        jokeStore.fetchJokes();
-      }
-    );
-
     // Fetch jokes when component mounts
     onMounted(() => {
       if (!jokeStore.jokes.length) {
@@ -77,9 +61,17 @@ export default defineComponent({
       }
     });
 
+    // Computed properties to access store state
+    const paginatedJokes = computed(() => jokeStore.paginatedJokes);
+    const selectedCategory = computed(() => jokeStore.selectedCategory);
+    const currentPage = computed(() => jokeStore.currentPage);
+    const totalPages = computed(() => jokeStore.totalPages);
+    const isLoading = computed(() => jokeStore.isLoading);
+    const error = computed(() => jokeStore.error);
+
     // Navigate to joke detail page
     const goToJokeDetail = (id) => {
-      this.$router.push({ name: "JokeDetail", params: { id } });
+      jokeStore.$router.push({ name: "JokeDetail", params: { id } });
     };
 
     // Handle page change
@@ -87,11 +79,8 @@ export default defineComponent({
       jokeStore.changePage(page);
     };
 
-    // Computed props for loading, errors, and joke data
-    const computedPaginatedJokes = computed(() => paginatedJokes);
-
     return {
-      paginatedJokes: computedPaginatedJokes,
+      paginatedJokes,
       selectedCategory,
       currentPage,
       totalPages,
@@ -137,19 +126,18 @@ export default defineComponent({
   object-fit: cover;
 }
 
-/* Align content inside joke card */
 .joke-content {
   display: flex;
-  flex-direction: column; /* Stack content vertically */
-  justify-content: flex-start; /* Align content at the top */
-  flex-grow: 1; /* Make sure content fills the available space */
-  height: 100%; /* Ensure it takes the full height */
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-grow: 1;
+  height: 100%;
 }
 
 .joke-content h3 {
   font-size: 1.1em;
   color: #2c3e50;
-  margin: 0; /* Remove any extra margin to make content align perfectly */
+  margin: 0;
 }
 
 .joke-content p {
@@ -164,6 +152,6 @@ export default defineComponent({
   font-size: 0.8em;
   color: #888888;
   margin-top: 0.5em;
-  margin-bottom: 0; /* Remove bottom margin for consistency */
+  margin-bottom: 0;
 }
 </style>
