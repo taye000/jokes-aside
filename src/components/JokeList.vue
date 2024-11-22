@@ -41,9 +41,10 @@
 </template>
 
 <script>
-import { useJokeStore } from "../store/index"; // Import Pinia store
+import { useJokeStore } from "../store/index"; 
 import AppPagination from "../components/AppPagination.vue";
 import { defineComponent, onMounted, computed } from "vue";
+import { useRouter } from "vue-router"; 
 import LoadingSpinner from "./LoadingSpinner.vue";
 
 export default defineComponent({
@@ -53,6 +54,7 @@ export default defineComponent({
   },
   setup() {
     const jokeStore = useJokeStore();
+    const router = useRouter(); 
 
     // Fetch jokes when component mounts
     onMounted(() => {
@@ -71,7 +73,7 @@ export default defineComponent({
 
     // Navigate to joke detail page
     const goToJokeDetail = (id) => {
-      jokeStore.$router.push({ name: "JokeDetail", params: { id } });
+      router.push({ name: "JokeDetail", params: { id } }); 
     };
 
     // Handle page change

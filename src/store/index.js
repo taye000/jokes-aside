@@ -37,7 +37,6 @@ export const useJokeStore = defineStore("jokeStore", {
         );
         this.categories = data;
       } catch (error) {
-        console.error("Error fetching categories:", error);
         this.error = "Failed to load categories. Please try again.";
       } finally {
         this.isLoading = false;
@@ -53,12 +52,10 @@ export const useJokeStore = defineStore("jokeStore", {
         const { data } = await axios.get(
           `https://api.chucknorris.io/jokes/search?query=${this.selectedCategory}`
         );
-        console.log("Fetched jokes for category:", data);
         this.jokes = data.result; // Store jokes in state
         this.totalJokes = data.total; // Store total count from the response
         this.previousCategory = this.selectedCategory;
       } catch (error) {
-        console.error("Error fetching jokes:", error);
         this.error = "Failed to load jokes. Please try again.";
       } finally {
         this.isLoading = false;
@@ -74,7 +71,6 @@ export const useJokeStore = defineStore("jokeStore", {
         );
         this.joke = response.data;
       } catch (error) {
-        console.error("Error fetching joke:", error);
         this.error = "Failed to load the joke. Please try again.";
       } finally {
         this.isLoading = false;

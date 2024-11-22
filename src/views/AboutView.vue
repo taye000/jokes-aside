@@ -1,4 +1,5 @@
 <template>
+  <button @click="goBack" class="back-button">← Back</button>
   <div class="about">
     <h1>About the Chuck Norris Jokes App</h1>
     <p>
@@ -28,12 +29,20 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: 'AboutPage',
   setup() {
-    // No dynamic data is needed, so setup remains simple.
-    return {};
+    const router = useRouter();
+    // Navigate back to the previous page
+    const goBack = () => {
+      router.back();
+    };
+
+    return {
+      goBack,
+    };
   },
 });
 </script>
@@ -78,6 +87,21 @@ export default defineComponent({
   color: #42b983;
   text-decoration: none;
   transition: color 0.3s;
+}
+
+.back-button {
+  display: inline-block;
+  margin-bottom: 1.5em;
+  padding: 0.7em 1.5em;
+  background-color: #42b983;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
 }
 
 .about a:hover {
