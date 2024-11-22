@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useJokeStore } from '../store/index'; // Import the Pinia store
 
 export default defineComponent({
@@ -27,12 +27,15 @@ export default defineComponent({
   setup() {
     const jokeStore = useJokeStore(); // Access the joke store
     
-    // Computed properties from the store
-    const currentPage = jokeStore.currentPage;
-    const totalPages = jokeStore.totalPages;
+    // Use computed properties to make currentPage and totalPages reactive
+    const currentPage = computed(() => jokeStore.currentPage);
+    const totalPages = computed(() => jokeStore.totalPages);
 
+    // Handle page change
     const pageChanged = (page) => {
-      jokeStore.changePage(page); // Update the page in the Pinia store
+      if (page >= 1 && page <= totalPages.value) {
+        jokeStore.changePage(page); // Update the current page in the Pinia store
+      }
     };
 
     return {
